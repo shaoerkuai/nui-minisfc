@@ -1,0 +1,21 @@
+<script setup lang="ts"></script>
+
+<template>
+  <div
+    :style="{
+      position: 'relative',
+      top: 'calc(var(--page-header-height))',
+      height: 'calc(100vh - var(--page-header-height))',
+    }"
+  >
+    <n-scrollbar :style="{maxHeight: 'calc(100vh - var(--page-header-height))'}">
+
+      <div v-for="_ in 50">
+        <br>
+        sad
+      </div>
+    </n-scrollbar>
+  </div>
+</template>
+
+<style scoped lang="scss"></style>
