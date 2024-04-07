@@ -11,8 +11,6 @@ import {
 
 const activeKey = ref(null);
 
-const menuContainer = ref<HTMLDivElement>(null);
-
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
@@ -146,7 +144,7 @@ const menuOptions: MenuOption[] = [
       <div class="nav-bar">
         <div>Title</div>
         <div style="overflow: hidden; width: 100%">
-          <div ref="menuContainer">
+          <div>
             <n-menu
               v-model:value="activeKey"
               mode="horizontal"

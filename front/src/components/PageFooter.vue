@@ -19,11 +19,19 @@ const contactInfo = () => {
 </script>
 
 <template>
-  <n-float-button position="fixed" bottom="48px" right="20px" @click="contactInfo">
-    <n-icon :size="24">
-      <BulbOutline />
-    </n-icon>
-  </n-float-button>
+  <n-popover placement="left-end" trigger="hover">
+    <template #trigger>
+      <n-float-button position="fixed" bottom="48px" right="20px" @click="contactInfo">
+        <n-icon :size="24">
+          <BulbOutline />
+        </n-icon>
+      </n-float-button>
+    </template>
+    <div>
+      这是一个提示
+    </div>
+  </n-popover>
+
   <div
     class="fixed bottom-0 box-border w-full"
     style="
