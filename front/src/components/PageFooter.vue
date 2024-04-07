@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BalloonOutline, BulbOutline } from '@vicons/ionicons5';
+import { BulbOutline } from '@vicons/ionicons5';
 import { useModal } from 'naive-ui';
 import { h } from 'vue';
 
