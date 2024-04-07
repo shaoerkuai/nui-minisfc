@@ -3,6 +3,7 @@ import PageHeader from './components/PageHeader.vue';
 import PageBody from './components/PageBody.vue';
 import PageFooter from './components/PageFooter.vue';
 import TestView from './views/TestView.vue';
+import ScrollBarView from './views/ScrollBarView.vue';
 </script>
 
 <template>
