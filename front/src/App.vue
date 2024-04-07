@@ -2,6 +2,7 @@
 import PageHeader from './components/PageHeader.vue';
 import PageBody from './components/PageBody.vue';
 import PageFooter from './components/PageFooter.vue';
+import TestView from './views/TestView.vue';
 </script>
 
 <template>
@@ -9,7 +10,11 @@ import PageFooter from './components/PageFooter.vue';
     <n-message-provider>
       <n-modal-provider>
         <PageHeader />
-        <PageBody />
+        <PageBody :is-scrollable="false">
+          <template #default>
+            <TestView />
+          </template>
+        </PageBody>
         <PageFooter />
       </n-modal-provider>
     </n-message-provider>
