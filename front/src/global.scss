@@ -1,5 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --page-header-height: 48px;
   // 标题栏左右侧间距
   --page-header-padding: 32px;
+  // 底部大小
+  --page-footer-height: 36px;
 }
