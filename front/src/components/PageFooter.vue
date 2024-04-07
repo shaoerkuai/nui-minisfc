@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BalloonOutline } from '@vicons/ionicons5';
+import { BalloonOutline, BulbOutline } from '@vicons/ionicons5';
 import { useModal } from 'naive-ui';
 import { h } from 'vue';
 
@@ -19,6 +19,11 @@ const contactInfo = () => {
 </script>
 
 <template>
+  <n-float-button position="fixed" bottom="48px" right="20px" @click="contactInfo">
+    <n-icon :size="24">
+      <BulbOutline />
+    </n-icon>
+  </n-float-button>
   <div
     class="fixed bottom-0 box-border w-full"
     style="
@@ -32,16 +37,6 @@ const contactInfo = () => {
       class="ml-4 h-full font-thin text-footer select-none flex items-center justify-between mr-4"
     >
       <span>1.0.0-661283dc96d8a335609a186d</span>
-      <div>
-        <n-button text @click="contactInfo">
-          <template #icon>
-            <n-icon>
-              <BalloonOutline />
-            </n-icon>
-          </template>
-          技术支持
-        </n-button>
-      </div>
     </div>
   </div>
 </template>

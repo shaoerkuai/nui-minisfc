@@ -4,6 +4,7 @@ import PageBody from './components/PageBody.vue';
 import PageFooter from './components/PageFooter.vue';
 import TestView from './views/TestView.vue';
 import ScrollBarView from './views/ScrollBarView.vue';
+import {BulbOutline} from '@vicons/ionicons5'
 </script>
 
 <template>

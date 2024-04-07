@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Component, h, ref } from 'vue';
 
-import { NIcon, NAvatar, MenuOption, NText } from 'naive-ui';
+import { MenuOption, NAvatar, NIcon, NText, useMessage } from 'naive-ui';
 import {
   BookOutline as BookIcon,
   LogOutOutline as LogoutIcon,
@@ -16,32 +16,29 @@ const menuContainer = ref<HTMLDivElement>(null);
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
-function renderCustomHeader () {
+
+function renderCustomHeader() {
   return h(
     'div',
     {
-      style: 'display: flex; align-items: center; padding: 8px 12px;'
+      style: 'display: flex; align-items: center; padding: 8px 12px;',
     },
     [
       h('div', null, [
         h('div', null, [h(NText, { depth: 2 }, { default: () => '张三' })]),
         h('div', { style: 'font-size: 12px;' }, [
-          h(
-            NText,
-            { depth: 3 },
-            { default: () => '软件开发部' }
-          )
-        ])
-      ])
-    ]
-  )
+          h(NText, { depth: 3 }, { default: () => '软件开发部' }),
+        ]),
+      ]),
+    ],
+  );
 }
 
 const options = [
   {
     key: 'header',
     type: 'render',
-    render: renderCustomHeader
+    render: renderCustomHeader,
   },
   {
     label: '退出登录',
@@ -133,6 +130,8 @@ const menuOptions: MenuOption[] = [
     ],
   },
 ];
+
+(window as any).$message = useMessage();
 </script>
 
 <template>
