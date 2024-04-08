@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Component, h, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 import { MenuOption, NAvatar, NIcon, NText, useMessage } from 'naive-ui';
 import {
@@ -13,6 +14,10 @@ const activeKey = ref(null);
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
+}
+
+function renderRouterLink(viewName: string, label: string) {
+  return h(RouterLink, { to: viewName }, { default: () => '' });
 }
 
 function renderCustomHeader() {
@@ -138,8 +143,8 @@ const menuOptions: MenuOption[] = [
       :style="{
         height: 'var(--page-header-height)',
         padding: '0 var(--page-header-padding)',
-        position:'fixed',
-        zIndex:1
+        position: 'fixed',
+        zIndex: 1,
       }"
       bordered
     >

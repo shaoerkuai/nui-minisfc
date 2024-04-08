@@ -15,7 +15,7 @@ function receiveCode() {
 <template>
   <div class="h-full w-full absolute">
     <div
-      class="relative -translate-y-[50%] w-[380px] top-[50%] left-[50%] -translate-x-[50%] overflow-hidden p-1"
+      class="login-panel p-1"
     >
       <n-alert type="info" title="登录提示" :bordered="false" closable>
         请通过聊天软件接收登录验证码实现免密登录!
@@ -64,8 +64,18 @@ function receiveCode() {
 <style scoped lang="scss">
 .card-tabs {
   position: relative;
+
   .n-tabs-nav--bar-type {
     padding-left: 4px;
   }
+}
+
+.login-panel {
+  position: relative;
+  width: 380px;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: 4px;
 }
 </style>
