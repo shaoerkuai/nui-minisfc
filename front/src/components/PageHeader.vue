@@ -138,6 +138,8 @@ const menuOptions: MenuOption[] = [
       :style="{
         height: 'var(--page-header-height)',
         padding: '0 var(--page-header-padding)',
+        position:'fixed',
+        zIndex:1
       }"
       bordered
     >

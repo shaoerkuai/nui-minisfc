@@ -4,6 +4,7 @@ import PageBody from './components/PageBody.vue';
 import PageFooter from './components/PageFooter.vue';
 import TestView from './views/TestView.vue';
 import ScrollBarView from './views/ScrollBarView.vue';
+import LoginView from './views/LoginView.vue';
 </script>
 
 <template>
@@ -13,7 +14,7 @@ import ScrollBarView from './views/ScrollBarView.vue';
         <PageHeader />
         <PageBody :is-scrollable="false">
           <template #default>
-            <TestView />
+            <LoginView/>
           </template>
         </PageBody>
         <PageFooter />
