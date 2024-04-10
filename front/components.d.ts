@@ -36,5 +36,7 @@ declare module 'vue' {
     PageBody: typeof import('./src/components/PageBody.vue')['default']
     PageFooter: typeof import('./src/components/PageFooter.vue')['default']
     PageHeader: typeof import('./src/components/PageHeader.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
   }
 }
