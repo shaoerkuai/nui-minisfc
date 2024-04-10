@@ -14,7 +14,7 @@ import LoginView from './views/LoginView.vue';
         <PageHeader />
         <PageBody :is-scrollable="false">
           <template #default>
-            <LoginView/>
+            <router-view></router-view>
           </template>
         </PageBody>
         <PageFooter />

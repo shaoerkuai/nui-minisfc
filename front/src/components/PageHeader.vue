@@ -9,8 +9,16 @@ import {
   PersonOutline as PersonIcon,
   WineOutline as WineIcon,
 } from '@vicons/ionicons5';
+import { useSessionStore } from '../store/sessionStore.ts';
 
 const activeKey = ref(null);
+const store = useSessionStore();
+store.$subscribe(
+  () => {
+    // TODO init menu
+  },
+  { detached: true },
+);
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });

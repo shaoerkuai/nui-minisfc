@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const loading = ref(false);
 const alreadyReceived = ref(false);
+import { useSessionStore } from '../store/sessionStore.ts';
 import { AlertCircle } from '@vicons/ionicons5';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { ref } from 'vue';
 
+const store = useSessionStore();
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
 const loginFormValue = ref({
@@ -78,6 +80,9 @@ async function login(e: Event) {
   e.preventDefault();
   if (await validate()) {
     setTimeout(() => {
+      store.logged = true;
+      store.dept = 'IT Test';
+      store.name = 'Jacob';
       message.success('登录成功');
     }, 500);
   }
