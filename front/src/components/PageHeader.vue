@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { Component, h, onMounted, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
-
 import type { MenuOption } from 'naive-ui';
 import { NAvatar, NIcon, NText, useMessage } from 'naive-ui';
 import {

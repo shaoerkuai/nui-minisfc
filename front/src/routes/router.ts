@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
 import { useSessionStore } from '../store/sessionStore.ts';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
   {
@@ -24,9 +24,17 @@ function inRoutes(name: string) {
   });
 }
 
-router.beforeEach(async (to, from) => {
+function checkLogin() {
   const store = useSessionStore();
-  let isAuthenticated = store.isLogged();
+  if (store.isLogged()) {
+    return true;
+  } else {
+    return localStorage.getItem('token') !== null;
+  }
+}
+
+router.beforeEach(async (to, from) => {
+  let isAuthenticated = checkLogin();
   if (!isAuthenticated && to.name !== 'login') {
     // 将用户重定向到登录页面
     (window as any).$message.error('请先完成登录');
