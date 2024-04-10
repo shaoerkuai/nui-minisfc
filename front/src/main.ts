@@ -7,7 +7,7 @@ import router from './routes/router.ts'
 const pinia = createPinia();
 
 
-
+// 处理 preflight 的影响
 const meta = document.createElement('meta');
 meta.name = 'naive-ui-style';
 document.head.appendChild(meta);

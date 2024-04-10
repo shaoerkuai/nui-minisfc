@@ -65,9 +65,13 @@ const menuOptions: MenuOption[] = [
     key: 'login',
     icon: renderIcon(BookIcon),
   },
+  {
+    label: () => renderRouterLink('home', '家里'),
+    key: 'home',
+    icon: renderIcon(BookIcon),
+  },
 ];
 (window as any).$message = useMessage();
-
 onMounted(() => {
   watch(
     () => route.currentRoute.value.name,
