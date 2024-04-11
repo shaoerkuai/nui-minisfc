@@ -1,24 +1,42 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import type { MenuOption } from 'naive-ui';
 import {
   BookOutline as BookIcon,
   LogOutOutline as LogoutIcon,
 } from '@vicons/ionicons5';
-import { NAvatar, NIcon, NText, useMessage } from 'naive-ui';
 
 import { useSessionStore } from '../store/sessionStore.ts';
+import { RouterLink } from 'vue-router';
 
 const route = useRouter();
+(window as any).$message = useMessage();
 
-const activeKey = ref(null);
+interface IUserInfo {
+  call: string;
+  department: string;
+  avatar: string;
+}
+
+const activeKey = ref<string | null>(null);
 const store = useSessionStore();
+const userInfo = ref<IUserInfo>({
+  call: '你好',
+  department: '软件开发部',
+  avatar:
+    'https://fastly.picsum.photos/id/1/100/100.jpg?hmac=ZFE9J9JWYx84uJzvjw4GTuagMzN4FAmaKE4XeJDMZTY',
+});
 store.$subscribe(
   () => {
     // TODO init menu
   },
   { detached: true },
 );
+
+async function fetchUserInfo() {
+  // TODO fetch user info
+  userInfo.value.call = '获取后';
+  userInfo.value.department = '获取后';
+}
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -36,9 +54,11 @@ function renderCustomHeader() {
     },
     [
       h('div', null, [
-        h('div', null, [h(NText, { depth: 2 }, { default: () => '张三' })]),
+        h('div', null, [
+          h(NText, { depth: 2 }, { default: () => userInfo.value.call }),
+        ]),
         h('div', { style: 'font-size: 12px;' }, [
-          h(NText, { depth: 3 }, { default: () => '软件开发部' }),
+          h(NText, { depth: 3 }, { default: () => userInfo.value.department }),
         ]),
       ]),
     ],
@@ -70,14 +90,23 @@ const menuOptions: MenuOption[] = [
     icon: renderIcon(BookIcon),
   },
 ];
-(window as any).$message = useMessage();
+
+function handleSelect(key: string | number) {
+  if (key === 'logout') {
+    // TODO MODIFY STORE & LOCALSTORAGE
+    (window as any).$message.error('已经退出登录');
+  }
+}
+
 onMounted(() => {
+  fetchUserInfo();
   watch(
     () => route.currentRoute.value.name,
     (value) => {
       if (value !== undefined) {
-        activeKey.value = value;
+        activeKey.value = String(value);
       }
+      console.log(value);
     },
     { immediate: true, deep: true },
   );
@@ -108,12 +137,8 @@ onMounted(() => {
           </div>
         </div>
         <n-flex align="center">
-          <n-dropdown :options="options">
-            <n-avatar
-              round
-              size="medium"
-              src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
-            />
+          <n-dropdown :options="options" @select="handleSelect">
+            <n-avatar round size="medium" :src="userInfo.avatar" />
           </n-dropdown>
         </n-flex>
       </div>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-const loading = ref(false);
-const alreadyReceived = ref(false);
+import { FormInst } from 'naive-ui';
 import { useSessionStore } from '../store/sessionStore.ts';
 import { AlertCircle } from '@vicons/ionicons5';
-import { FormInst, FormItemRule, useMessage } from 'naive-ui';
+
+const loading = ref(false);
+const alreadyReceived = ref(false);
 
 const store = useSessionStore();
 const message = useMessage();
@@ -17,7 +18,7 @@ const rules = {
     key: 'u',
     required: true,
     message: '请输入正确的小写英文字母用户名',
-    validator(rule: FormItemRule, value: string) {
+    validator(_: any, value: string) {
       if (value.length < 1 || !/[a-z0-9]+$/.test(value)) {
         return new Error('wrong code');
       }
@@ -29,7 +30,7 @@ const rules = {
   verifyCode: {
     required: true,
     message: '请输入正确的验证码',
-    validator(rule: FormItemRule, value: string) {
+    validator(_: any, value: string) {
       if (value.length !== 6 || !/^\d*$/.test(value)) {
         return new Error('wrong code');
       }
