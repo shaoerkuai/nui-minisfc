@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import type { MenuOption } from 'naive-ui';
-import { NAvatar, NIcon, NText, useMessage } from 'naive-ui';
 import {
   BookOutline as BookIcon,
   LogOutOutline as LogoutIcon,
 } from '@vicons/ionicons5';
+import { NAvatar, NIcon, NText, useMessage } from 'naive-ui';
+
 import { useSessionStore } from '../store/sessionStore.ts';
 
 const route = useRouter();

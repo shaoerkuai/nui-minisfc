@@ -22,6 +22,7 @@ export default defineConfig({
           ],
         },
       ],
+      resolvers: [NaiveUiResolver()],
     }),
     Components({
       resolvers: [NaiveUiResolver()],

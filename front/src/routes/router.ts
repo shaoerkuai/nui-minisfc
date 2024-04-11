@@ -33,7 +33,7 @@ function checkLogin() {
   }
 }
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   let isAuthenticated = checkLogin();
   if (!isAuthenticated && to.name !== 'login') {
     // 将用户重定向到登录页面

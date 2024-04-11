@@ -4,7 +4,6 @@ const alreadyReceived = ref(false);
 import { useSessionStore } from '../store/sessionStore.ts';
 import { AlertCircle } from '@vicons/ionicons5';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
-import { ref } from 'vue';
 
 const store = useSessionStore();
 const message = useMessage();
