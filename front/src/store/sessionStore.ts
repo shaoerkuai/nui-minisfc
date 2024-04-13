@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import constants from '../assets/constants.json';
 
 export const useSessionStore = defineStore('session', () => {
   const logged = ref(false);
   const name = ref('--');
   const dept = ref('--');
   const avatarLink = ref(
-    'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+    '',
   );
 
   function isLogged() {
@@ -15,9 +16,9 @@ export const useSessionStore = defineStore('session', () => {
 
   function clearState() {
     logged.value = false;
-    name.value = '--';
-    dept.value = '--';
-    avatarLink.value = '';
+    name.value = constants.anonymousName;
+    dept.value = constants.anonymousDept;
+    avatarLink.value = constants.avatarUrl;
   }
 
   return { logged, name, dept, avatarLink, isLogged, clearState };

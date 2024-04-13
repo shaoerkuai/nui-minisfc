@@ -60,7 +60,7 @@ router.beforeEach(async (to, from) => {
   }
   if (isAuthenticated && to.name == 'login') {
     // 防止重复进入登录页面
-    (window as any).$message.error('请勿重复登录');
+    (window as any).$message.warning('请勿重复登录，已跳转至首页');
     cancelRoutingPublishEvent(from.name);
     return { name: 'home' };
   }

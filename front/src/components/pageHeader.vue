@@ -2,14 +2,15 @@
 import type { DropdownOption, MenuOption } from 'naive-ui';
 import {
   BookOutline as BookIcon,
-  LogOutOutline as LogoutIcon,
   LogInOutline as LogInIcon,
+  LogOutOutline as LogoutIcon,
 } from '@vicons/ionicons5';
 
 import { useSessionStore } from '../store/sessionStore.ts';
 import { RouterLink } from 'vue-router';
 import { commonEvent } from '../utils/mitt.ts';
 import { Component } from 'vue';
+import constants from '../assets/constants.json';
 
 const route = useRouter();
 (window as any).$message = useMessage();
@@ -26,10 +27,9 @@ const activeKey = ref<string | null>(null);
 const store = useSessionStore();
 const userInfo = ref<IUserInfo>({
   logged: false,
-  call: '匿名用户',
-  department: '--',
-  avatar:
-    '',
+  call: constants.anonymousName,
+  department: constants.anonymousDept,
+  avatar: constants.avatarUrl,
 });
 store.$subscribe(
   () => {
@@ -38,7 +38,7 @@ store.$subscribe(
     userInfo.value.avatar = store.avatarLink;
     userInfo.value.logged = store.logged;
     if (!store.isLogged()) {
-      options.value =  options.value.filter((item) => item.key !== 'logout');
+      options.value = options.value.filter((item) => item.key !== 'logout');
     } else {
       options.value.push({
         label: '退出登录',
@@ -110,6 +110,7 @@ function handleSelect(key: string | number) {
     route.push({ name: 'login' });
   }
 }
+
 commonEvent.on('abortRouting', (key: string) => {
   activeKey.value = key;
 });
