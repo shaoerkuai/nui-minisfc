@@ -10,6 +10,7 @@ const prop = defineProps({
   <div
     :style="{
       position: 'relative',
+      overflow: 'auto',
       top: 'calc(var(--page-header-height))',
       height:
         'calc(100vh - var(--page-header-height) - var(--page-footer-height))',

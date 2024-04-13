@@ -3,7 +3,7 @@
 </script>
 
 <template>
-
+<StepWrapper/>
 </template>
 
 <style scoped lang="scss">

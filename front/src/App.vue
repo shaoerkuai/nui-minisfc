@@ -6,7 +6,7 @@ import themeOverrides from './assets/naive-ui-theme-overrides.json'
 </script>
 
 <template>
-  <n-config-provider preflight-style-disabled :theme-overrides="themeOverrides">
+  <n-config-provider :theme-overrides="themeOverrides">
     <n-message-provider>
       <n-modal-provider>
         <PageHeader />
