@@ -57,7 +57,9 @@ function receiveCode() {
         return rule?.key === 'uValidateRuleKey';
       },
     )
-    .finally(() => {});
+    .catch(() => {
+      message.error('请检查输入项是否正确');
+    });
 }
 
 async function validate() {
@@ -136,7 +138,7 @@ async function login(e: Event) {
                       class="inline-block h-4 w-4 outline-none align-bottom"
                     />
                   </template>
-                  请通过 IM 收取验证码
+                  有效期内的验证码不会重复发送
                 </n-tooltip>
               </template>
               <n-input

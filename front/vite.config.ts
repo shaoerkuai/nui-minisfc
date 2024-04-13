@@ -32,4 +32,13 @@ export default defineConfig({
     __APP_VERSION__: JSON.stringify('v1.0.0'),
     __APP_BUILD_TIME__: JSON.stringify(new Date().toLocaleString())
   },
+  build:{
+    rollupOptions:{
+      output:{
+        entryFileNames: "assets/js/entry.[hash].js",
+        chunkFileNames: "assets/js/chunk.[hash].js",
+        assetFileNames: "assets/[ext]/static.[hash].[ext]",
+      }
+    }
+  }
 });
