@@ -7,11 +7,15 @@ import {
 
 import { useSessionStore } from '../store/sessionStore.ts';
 import { RouterLink } from 'vue-router';
+import { commonEvent } from '../utils/mitt.ts';
+import type { MenuMixedOption } from 'naive-ui/es/menu/src/interface';
 
 const route = useRouter();
 (window as any).$message = useMessage();
+(window as any).$eventBus = commonEvent;
 
 interface IUserInfo {
+  logged: boolean;
   call: string;
   department: string;
   avatar: string;
@@ -20,22 +24,33 @@ interface IUserInfo {
 const activeKey = ref<string | null>(null);
 const store = useSessionStore();
 const userInfo = ref<IUserInfo>({
-  call: '你好',
-  department: '软件开发部',
+  logged: false,
+  call: '--',
+  department: '--',
   avatar:
-    'https://fastly.picsum.photos/id/1/100/100.jpg?hmac=ZFE9J9JWYx84uJzvjw4GTuagMzN4FAmaKE4XeJDMZTY',
+    '',
 });
 store.$subscribe(
   () => {
-    // TODO init menu
+    userInfo.value.call = store.name;
+    userInfo.value.department = store.dept;
+    userInfo.value.avatar = store.avatarLink;
+    userInfo.value.logged = store.logged;
+    if (!store.isLogged()) {
+      options.value =  options.value.filter((item) => item.key !== 'logout');
+    } else {
+      options.value.push({
+        label: '退出登录',
+        key: 'logout',
+        icon: renderIcon(LogoutIcon),
+      });
+    }
   },
   { detached: true },
 );
 
-async function fetchUserInfo() {
-  // TODO fetch user info
-  userInfo.value.call = '获取后';
-  userInfo.value.department = '获取后';
+async function fetchUserAvatarLink() {
+  // TODO fetch user avatar
 }
 
 function renderIcon(icon: Component) {
@@ -65,18 +80,13 @@ function renderCustomHeader() {
   );
 }
 
-const options = [
+const options = ref<Array<MenuMixedOption>>([
   {
     key: 'header',
     type: 'render',
     render: renderCustomHeader,
   },
-  {
-    label: '退出登录',
-    key: 'logout',
-    icon: renderIcon(LogoutIcon),
-  },
-];
+]);
 
 const menuOptions: MenuOption[] = [
   {
@@ -93,20 +103,23 @@ const menuOptions: MenuOption[] = [
 
 function handleSelect(key: string | number) {
   if (key === 'logout') {
-    // TODO MODIFY STORE & LOCALSTORAGE
-    (window as any).$message.error('已经退出登录');
+    (window as any).$message.error('已退出当前账号');
+    localStorage.removeItem('token');
+    store.clearState();
+    route.push({ name: 'login' });
   }
 }
-
+commonEvent.on('abortRouting', (key: string) => {
+  activeKey.value = key;
+});
 onMounted(() => {
-  fetchUserInfo();
+  fetchUserAvatarLink();
   watch(
     () => route.currentRoute.value.name,
     (value) => {
       if (value !== undefined) {
         activeKey.value = String(value);
       }
-      console.log(value);
     },
     { immediate: true, deep: true },
   );
@@ -129,7 +142,7 @@ onMounted(() => {
         <div style="overflow: hidden; width: 100%">
           <div>
             <n-menu
-              v-model:value="activeKey"
+              :value="activeKey"
               mode="horizontal"
               :options="menuOptions"
               responsive

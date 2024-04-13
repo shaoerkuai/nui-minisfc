@@ -1,5 +1,7 @@
 import { useSessionStore } from '../store/sessionStore.ts';
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, RouteRecordName } from 'vue-router';
+import { Emitter } from 'mitt';
+import { ICommonEvent } from '../utils/mitt.ts';
 
 const routes = [
   {
@@ -31,8 +33,8 @@ function checkLogin() {
   } else {
     let localStorageToken = localStorage.getItem('token');
     if (localStorageToken) {
-      store.name = '123';
-      store.dept = '软考';
+      store.name = 'router.checkLogin';
+      store.dept = 'router.dept';
       store.logged = true;
       return true;
     } else {
@@ -41,16 +43,25 @@ function checkLogin() {
   }
 }
 
-router.beforeEach(async (to) => {
+function cancelRoutingPublishEvent(key: RouteRecordName | null | undefined) {
+  ((window as any).$eventBus as Emitter<ICommonEvent>).emit(
+    'abortRouting',
+    key as string,
+  );
+}
+
+router.beforeEach(async (to, from) => {
   let isAuthenticated = checkLogin();
   if (!isAuthenticated && to.name !== 'login') {
     // 将用户重定向到登录页面
     (window as any).$message.error('请先完成登录后再使用');
+    cancelRoutingPublishEvent(from.name)
     return { name: 'login' };
   }
   if (isAuthenticated && to.name == 'login') {
     // 防止重复进入登录页面
     (window as any).$message.error('请勿重复登录');
+    cancelRoutingPublishEvent(from.name);
     return { name: 'home' };
   }
   // 如果访问的是不在路由内的页面，则直接跳转到首页

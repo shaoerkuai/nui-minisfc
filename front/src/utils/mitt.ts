@@ -1,12 +1,18 @@
 import mitt, { Emitter } from 'mitt';
 
 /*
+ * 全局事件*/
+type ICommonEvent = {
+  abortRouting: string; // 取消路由。值为原 key
+};
+
+/*
 步骤事件
 */
 type IStepEvent = {
   pushStep: IStepEventObject; // 下一步
   popStep: IStepEventObject; // 上一步
-  abort:number, // 终止，传当前步骤id
+  abort: number; // 终止，传当前步骤id
 };
 
 interface IStepEventObject {
@@ -19,4 +25,5 @@ interface IStepEventObject {
 }
 
 export const stepEvent: Emitter<IStepEvent> = mitt<IStepEvent>();
-export type { IStepEvent,IStepEventObject };
+export const commonEvent: Emitter<ICommonEvent> = mitt<ICommonEvent>();
+export type { IStepEvent, ICommonEvent, IStepEventObject };

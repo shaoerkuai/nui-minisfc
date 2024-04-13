@@ -15,7 +15,7 @@ const loginFormValue = ref({
 });
 const rules = {
   username: {
-    key: 'u',
+    key: 'uValidateRuleKey',
     required: true,
     message: '请输入正确的小写英文字母用户名',
     validator(_: any, value: string) {
@@ -53,7 +53,7 @@ function receiveCode() {
         }
       },
       (rule) => {
-        return rule?.key === 'u';
+        return rule?.key === 'uValidateRuleKey';
       },
     )
     .finally(() => {});
@@ -80,9 +80,13 @@ async function login(e: Event) {
   e.preventDefault();
   if (await validate()) {
     setTimeout(() => {
-      store.logged = true;
+      // TODO 这里从服务器拿jwt后解析
       store.dept = 'IT Test';
       store.name = 'Jacob';
+      store.avatarLink =
+        'https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI';
+      store.logged = true;
+      localStorage.setItem('token', '1');
       message.success('登录成功');
     }, 500);
   }
