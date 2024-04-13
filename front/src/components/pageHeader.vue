@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import type { MenuOption } from 'naive-ui';
+import type { DropdownOption, MenuOption } from 'naive-ui';
 import {
   BookOutline as BookIcon,
   LogOutOutline as LogoutIcon,
+  LogInOutline as LogInIcon,
 } from '@vicons/ionicons5';
 
 import { useSessionStore } from '../store/sessionStore.ts';
 import { RouterLink } from 'vue-router';
 import { commonEvent } from '../utils/mitt.ts';
-import type { MenuMixedOption } from 'naive-ui/es/menu/src/interface';
+import { Component } from 'vue';
 
 const route = useRouter();
 (window as any).$message = useMessage();
@@ -25,7 +26,7 @@ const activeKey = ref<string | null>(null);
 const store = useSessionStore();
 const userInfo = ref<IUserInfo>({
   logged: false,
-  call: '--',
+  call: '匿名用户',
   department: '--',
   avatar:
     '',
@@ -80,7 +81,7 @@ function renderCustomHeader() {
   );
 }
 
-const options = ref<Array<MenuMixedOption>>([
+const options = ref<Array<DropdownOption>>([
   {
     key: 'header',
     type: 'render',
@@ -92,7 +93,7 @@ const menuOptions: MenuOption[] = [
   {
     label: () => renderRouterLink('login', '登录'),
     key: 'login',
-    icon: renderIcon(BookIcon),
+    icon: renderIcon(LogInIcon),
   },
   {
     label: () => renderRouterLink('home', '家里'),

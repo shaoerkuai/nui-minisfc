@@ -5,6 +5,7 @@ import { AlertCircle } from '@vicons/ionicons5';
 
 const loading = ref(false);
 const alreadyReceived = ref(false);
+const route = useRouter();
 
 const store = useSessionStore();
 const message = useMessage();
@@ -69,6 +70,7 @@ async function validate() {
         } else {
           message.error('请检查输入项是否正确');
           validateRes = false;
+          loading.value = false;
         }
       })
       .catch(() => {});
@@ -79,6 +81,7 @@ async function validate() {
 async function login(e: Event) {
   e.preventDefault();
   if (await validate()) {
+    loading.value = true;
     setTimeout(() => {
       // TODO 这里从服务器拿jwt后解析
       store.dept = 'IT Test';
@@ -88,6 +91,8 @@ async function login(e: Event) {
       store.logged = true;
       localStorage.setItem('token', '1');
       message.success('登录成功');
+      loading.value = false;
+      route.push({ name: 'home' });
     }, 500);
   }
 }
