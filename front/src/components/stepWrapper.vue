@@ -69,7 +69,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="mt-16 p-1 h-16 w-[95%] m-auto rounded">
+    <div class="mt-16 p-1 h-16 w-[95%] m-auto">
       <n-steps :current="current as number">
         <n-step
           v-for="(item, ind) in props.stepList"

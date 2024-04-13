@@ -2,7 +2,8 @@
 import { BulbOutline } from '@vicons/ionicons5';
 import { useModal } from 'naive-ui';
 import { h } from 'vue';
-
+const app_version = __APP_VERSION__
+const app_build_time = __APP_BUILD_TIME__
 const modal = useModal();
 const contactInfo = () => {
   modal.create({
@@ -44,7 +45,7 @@ const contactInfo = () => {
     <div
       class="ml-4 h-full font-thin text-footer select-none flex items-center justify-between mr-4"
     >
-      <span>1.0.0-661283dc96d8a335609a186d</span>
+      <span> {{app_version}} (构建日期: {{ app_build_time}})</span>
     </div>
   </div>
 </template>

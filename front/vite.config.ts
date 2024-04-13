@@ -28,4 +28,8 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
     }),
   ],
+  define: {
+    __APP_VERSION__: JSON.stringify('v1.0.0'),
+    __APP_BUILD_TIME__: JSON.stringify(new Date().toLocaleString())
+  },
 });
