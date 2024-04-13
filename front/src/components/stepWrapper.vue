@@ -15,7 +15,9 @@ const props = defineProps<{
   currentStep: number;
   stepList: IWrappedStepObject[];
 }>();
+// 当前步骤
 const current = ref<number>(props.currentStep);
+// 每个步骤序号的的状态
 const stepModelList = ref<Array<StepModelProperties>>([]);
 props.stepList.forEach((item: IWrappedStepObject, index) => {
   stepModelList.value?.push({
@@ -24,18 +26,20 @@ props.stepList.forEach((item: IWrappedStepObject, index) => {
   });
 });
 stepEvent.on('pushStep', (event: IStepEventObject) => {
+  // 流程要求进入下一步
   current.value =
     event.prevStep >= props.maxStep ? props.maxStep : event.prevStep + 1;
     stepModelList.value[event.prevStep - 1].stepStatus = event.prevStepStatus;
     stepModelList.value[current.value - 1].stepStatus = event.targetStepStatus;
 });
 stepEvent.on('popStep', (event: IStepEventObject) => {
+  // 流程要求回退一步
   current.value = event.prevStep <= 1 ? 1 : event.prevStep - 1;
     stepModelList.value[event.prevStep - 1].stepStatus = event.prevStepStatus;
     stepModelList.value[current.value - 1].stepStatus = event.targetStepStatus;
 });
 stepEvent.on('abort', (eventStep: number) => {
-  // 任务终止
+  // 流程终止
     stepModelList.value[eventStep].stepStatus = 'error';
 });
 
