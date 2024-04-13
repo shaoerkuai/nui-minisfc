@@ -6,4 +6,9 @@ interface IWrappedStepObject {
   stepDescription: string;
 }
 
-export type { IWrappedStepObject };
+interface StepModelProperties {
+  stepNumber: number;
+  stepStatus: StepsProps['status'];
+}
+
+export type { IWrappedStepObject, StepModelProperties };
