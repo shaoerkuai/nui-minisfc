@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import PageHeader from './components/PageHeader.vue';
-import PageBody from './components/PageBody.vue';
-import PageFooter from './components/PageFooter.vue';
+import PageHeader from './components/pageHeader.vue';
+import PageBody from './components/pageBody.vue';
+import PageFooter from './components/pageFooter.vue';
 import themeOverrides from './assets/naive-ui-theme-overrides.json'
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormInst } from 'naive-ui';
-import { useSessionStore } from '../store/sessionStore.ts';
+import { useSessionStore } from '../../store/sessionStore.ts';
 import { AlertCircle } from '@vicons/ionicons5';
 
 const loading = ref(false);

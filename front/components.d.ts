@@ -39,11 +39,11 @@ declare module 'vue' {
     NTag: typeof import('naive-ui')['NTag']
     NTooltip: typeof import('naive-ui')['NTooltip']
     NWatermark: typeof import('naive-ui')['NWatermark']
-    PageBody: typeof import('./src/components/PageBody.vue')['default']
-    PageFooter: typeof import('./src/components/PageFooter.vue')['default']
-    PageHeader: typeof import('./src/components/PageHeader.vue')['default']
+    PageBody: typeof import('./src/components/pageBody.vue')['default']
+    PageFooter: typeof import('./src/components/pageFooter.vue')['default']
+    PageHeader: typeof import('./src/components/pageHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StepWrapper: typeof import('./src/components/StepWrapper.vue')['default']
+    StepWrapper: typeof import('./src/components/stepWrapper.vue')['default']
   }
 }
