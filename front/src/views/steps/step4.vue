@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { stepEvent } from '../../utils/mitt.ts';
 
-const testFun = ()=>{
+const testFun = () => {
   stepEvent.emit('popStep', {
     prevStep: 4,
     prevStepStatus: 'wait',
     targetStepStatus: 'process',
   });
-}
-const testFu2 = ()=>{
+};
+const testFu2 = () => {
   stepEvent.emit('pushStep', {
     prevStep: 4,
     prevStepStatus: 'finish',
     targetStepStatus: 'process',
   });
-}
+};
 </script>
 
 <template>
@@ -24,6 +24,4 @@ const testFu2 = ()=>{
     <n-button @click="testFu2">next</n-button>
   </div>
 </template>
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
