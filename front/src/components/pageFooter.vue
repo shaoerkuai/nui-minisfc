@@ -10,9 +10,9 @@ const contactInfo = () => {
     title: '技术支持',
     content: () =>
       h('div', { class: 'contact-info' }, [
-        h('span', null, '联系作者：test'),
+        h('span', null, 'test'),
         h('br'),
-        h('span', null, 'QQ：test'),
+        h('span', null, 'test'),
       ]),
     preset: 'dialog',
   });

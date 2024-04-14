@@ -33,7 +33,6 @@ export default defineConfig({
     __APP_BUILD_TIME__: JSON.stringify(new Date().toLocaleString())
   },
   server:{
-
     host: '127.0.0.1', // 主机ip
     https: false, // 是否开启 https
     open: true, // 是否自动在浏览器打开

@@ -89,7 +89,7 @@ async function login(e: Event) {
       store.dept = 'IT Test';
       store.name = 'Jacob';
       store.avatarLink =
-        'https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI';
+        'https://picsum.photos/200/300';
       store.logged = true;
       localStorage.setItem('token', '1');
       message.success('登录成功');
