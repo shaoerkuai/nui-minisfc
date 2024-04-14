@@ -4,6 +4,7 @@ import {
   BookOutline as BookIcon,
   LogInOutline as LogInIcon,
   LogOutOutline as LogoutIcon,
+  ServerSharp as ServerIcon,
 } from '@vicons/ionicons5';
 
 import { useSessionStore } from '../store/sessionStore.ts';
@@ -99,6 +100,11 @@ const menuOptions: MenuOption[] = [
     label: () => renderRouterLink('home', '家里'),
     key: 'home',
     icon: renderIcon(BookIcon),
+  },
+  {
+    label: () => renderRouterLink('status', '执行机状态'),
+    key: 'status',
+    icon: renderIcon(ServerIcon),
   },
 ];
 

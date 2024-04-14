@@ -44,6 +44,7 @@ const contactInfo = () => {
   >
     <div
       class="ml-4 h-full font-thin text-footer select-none flex items-center justify-between mr-4"
+      style="font-size: 0.8rem"
     >
       <span> {{app_version}} (构建日期: {{ app_build_time}})</span>
     </div>

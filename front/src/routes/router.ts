@@ -1,5 +1,9 @@
 import { useSessionStore } from '../store/sessionStore.ts';
-import { createRouter, createWebHashHistory, RouteRecordName } from 'vue-router';
+import {
+  createRouter,
+  createWebHashHistory,
+  RouteRecordName,
+} from 'vue-router';
 import { Emitter } from 'mitt';
 import { ICommonEvent } from '../utils/mitt.ts';
 
@@ -13,6 +17,16 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import('../views/testPageView.vue'),
+  },
+  {
+    path: '/status',
+    name: 'status',
+    component: () => import('../views/serviceStatus.vue'),
+  },
+  {
+    path: '/private/manage',
+    name: 'privateManagement',
+    component: () => import('../views/manage.vue'),
   },
 ];
 const router = createRouter({
@@ -55,7 +69,7 @@ router.beforeEach(async (to, from) => {
   if (!isAuthenticated && to.name !== 'login') {
     // 将用户重定向到登录页面
     (window as any).$message.error('请先完成登录后再使用');
-    cancelRoutingPublishEvent(from.name)
+    cancelRoutingPublishEvent(from.name);
     return { name: 'login' };
   }
   if (isAuthenticated && to.name == 'login') {

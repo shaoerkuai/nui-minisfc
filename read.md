@@ -1,13 +1,6 @@
 # nui-minisfc
+
 用于测试效能工具开发的轻量级集成模板。
-
-基于高性能 Web 框架 Sanic 与前端组件库 Naive UI 实现，主要提供了前端和后端的模板，结构清晰开箱即用。
-
-非常适用于：单页或轻量级测试工具平台开发。
-
-支持测试工具面向效能平台的凭据基于离线Ticket实现低成本对接（效能平台仅需根据协商的算法创建带Ticket的URL即可，后端会自动转换成无状态Token，适合安全性要求适中的内网场景），和更高安全要求的SSO对接。
-
-由 Sanic 提供的生产就绪 Web 服务器，无需额外部署Nginx。
 
 ## 前端
 
@@ -16,13 +9,17 @@
 - Pinia
 - Vue Router
 - Tailwind CSS
+- mitt
 
 ## 后端
 
 - Sanic
 - Swagger & Redoc
-- Token-based JWT generator
 - PostgreSQL & SQLAlchemy 2.0
+
+## 中间件
+
+- jenkins
 
 ## 开发说明
 
@@ -59,10 +56,3 @@
 支持SOAP等非REST统一返回结构体的协议，故axios默认返回到的是promise的实例，用户自行对结构体进行校验，这里不做统一校验。
 
 `api`文件夹下进行API的声明。
-
-5.开发规范
-
-- 页面应当具备Loading状态防止重复提交
-- 调用IT接口时应当增加防抖和节流，避免IT系统负载过高。
-- 产生异常时，如必须用户处理，应当使用Modal而不是Message
-- 用户提交的历史数据，应当持久化，防止刷新后重置。
