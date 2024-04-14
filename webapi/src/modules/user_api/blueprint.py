@@ -2,6 +2,7 @@ import re
 import secrets
 
 from sanic import Blueprint, json
+from sanic_jwt import scoped
 
 user_api_bp = Blueprint('user_api', url_prefix='/user')
 
@@ -21,8 +22,10 @@ async def generate_random_number():
 async def verify_code(request):
     username: str = request.args.get('username')
     if username is None:
-        return json({"status": "fail", "message": "username is missing"})
+        return json({"error": True, "message": "username is missing"})
     if re.fullmatch(re_en_num_only, username) is None:
-        return json({"status": "fail", "message": "username is invalid"})
-    code = await generate_random_number()
-    return json({"status": "ok"})
+        return json({"error": True, "message": "username is invalid"})
+    if await request.ctx.r_session.exists(f'verify:{username}') != 1:
+        code = await generate_random_number()
+        await request.ctx.r_session.set(f"verify:{username}", str(code), nx=True, ex=5 * 60)
+    return json({"error": False})
