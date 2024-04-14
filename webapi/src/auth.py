@@ -1,8 +1,18 @@
+import traceback
+
 from sanic import json
 from sanic_jwt import Responses, Claim
 from sanic_jwt import exceptions
+from sanic_jwt.exceptions import SanicJWTException
 
 MANAGERS = ['wangwu', 'admin']  # 管理员列表
+
+
+class AuthenticationCreateTokenFailed(SanicJWTException):
+    status_code = 406
+
+    def __init__(self, message="Authentication failed.", **kwargs):
+        super().__init__(message, **kwargs)
 
 
 class MyCustomClaim(Claim):
@@ -81,12 +91,12 @@ async def authenticate(request, *args, **kwargs):
     password = request.json.get('code', None)
 
     if not username or not password:
-        raise exceptions.AuthenticationFailed("Missing verify code or password.")
+        raise AuthenticationCreateTokenFailed("Missing verify code or password.")
 
     user = await get_login_user(aio_session=request.ctx.r_session, user_name=username)
     if user is None:
-        raise exceptions.AuthenticationFailed("User not found.")
+        raise AuthenticationCreateTokenFailed("User not found.")
 
     if password != user['code']:
-        raise exceptions.AuthenticationFailed("Verify code is incorrect.")
+        raise AuthenticationCreateTokenFailed("Verify code is incorrect.")
     return user
