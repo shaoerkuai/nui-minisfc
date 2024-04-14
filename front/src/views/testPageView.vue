@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IWrappedStepObject } from '../components/types/StepWrapper.types.ts';
+import { IWrappedStepObject } from '../components/types/stepWrapper.types.ts';
 
 const IWrappedStepObject_ = ref<Array<IWrappedStepObject>>([
   {

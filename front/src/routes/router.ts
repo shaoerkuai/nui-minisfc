@@ -70,7 +70,7 @@ async function cancelRoutingPublishEvent(
     key as string,
   );
 }
-
+// @ts-ignore
 router.beforeEach(async (to, from) => {
   await dispatchLoading(true);
 

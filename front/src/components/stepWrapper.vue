@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import {
   IWrappedStepObject,
   StepModelProperties,
-} from './types/StepWrapper.types.ts';
+} from './types/stepWrapper.types.ts';
 import Step1 from '../views/steps/step1.vue';
 import Step2 from '../views/steps/step2.vue';
 import Step3 from '../views/steps/step3.vue';
