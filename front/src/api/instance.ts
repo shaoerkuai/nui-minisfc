@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import router from '../routes/router.ts';
 import { useSessionStore } from '../store/sessionStore.ts';
+
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_APP_URL,
   timeout: 2000,
