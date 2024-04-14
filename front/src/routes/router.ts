@@ -5,7 +5,7 @@ import {
   RouteRecordName,
 } from 'vue-router';
 import { Emitter } from 'mitt';
-import { ICommonEvent } from '../utils/mitt.ts';
+import { commonEvent, ICommonEvent } from '../utils/mitt.ts';
 
 const routes = [
   {
@@ -40,6 +40,10 @@ function inRoutes(name: string) {
   });
 }
 
+function dispatchLoading(loading: boolean) {
+  commonEvent.emit('routeLoading',loading)
+}
+
 function checkLogin() {
   const store = useSessionStore();
   if (store.isLogged()) {
@@ -65,6 +69,7 @@ function cancelRoutingPublishEvent(key: RouteRecordName | null | undefined) {
 }
 
 router.beforeEach(async (to, from) => {
+  dispatchLoading(true);
   let isAuthenticated = checkLogin();
   if (!isAuthenticated && to.name !== 'login') {
     // 将用户重定向到登录页面
@@ -83,5 +88,8 @@ router.beforeEach(async (to, from) => {
     (window as any).$message.error('无效页面请求');
     return { name: 'home' };
   }
+});
+router.afterEach(() => {
+  dispatchLoading(false);
 });
 export default router;

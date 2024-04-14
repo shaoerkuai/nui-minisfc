@@ -14,6 +14,7 @@ import { Component } from 'vue';
 import constants from '../assets/constants.json';
 
 const route = useRouter();
+const loadingBar = useLoadingBar();
 (window as any).$message = useMessage();
 (window as any).$eventBus = commonEvent;
 
@@ -116,7 +117,13 @@ function handleSelect(key: string | number) {
     route.push({ name: 'login' });
   }
 }
-
+commonEvent.on('routeLoading', (e) => {
+  if (e) {
+    loadingBar.start();
+  } else {
+    loadingBar.finish();
+  }
+});
 commonEvent.on('abortRouting', (key: string) => {
   activeKey.value = key;
 });

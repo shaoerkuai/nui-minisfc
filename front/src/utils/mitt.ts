@@ -4,6 +4,7 @@ import mitt, { Emitter } from 'mitt';
  * 全局事件*/
 type ICommonEvent = {
   abortRouting: string; // 取消路由。值为原 key
+  routeLoading: boolean;
 };
 
 /*
