@@ -16,7 +16,7 @@ from src.log_config import setup_logging
 from src.modules.api_group_v1 import api_group_all
 
 _redis_session = aioredis.Redis(host='localhost', port=3278, db=0)
-bind = create_async_engine("mysql+aiomysql://root:123456@localhost/db_test", echo=True, hide_parameters=True)
+bind = create_async_engine("mysql+aiomysql://root:123456@localhost/db_test", echo=False)
 _session_maker = async_sessionmaker(bind, expire_on_commit=False)
 _base_model_session_ctx = ContextVar("session")
 
@@ -52,6 +52,7 @@ async def close_session(request, response):
 
 @app.exception(sqlalchemy.exc.IntegrityError)
 async def catch_driver_exception(request, exception):
+    logger.error(exception)
     return json({
         "error": True,
         "message": "Integrity error, try again."
@@ -73,8 +74,7 @@ async def ds(request):
     async with session.begin():
         statement = text("""INSERT INTO db_test.test_tb_1 VALUES (1111111,'2233')""")
         await session.execute(statement)
-    l = logging.getLogger('sqlalchemy.engine')
-    print(l)
+    logger.info('我是1')
     return json({"dd": "aa"})
 
 
@@ -82,6 +82,7 @@ async def check_db_connection():
     logger.info('Check database connection')
     async with bind.connect() as conn:
         await conn.execute(text('SELECT 1'))
+    await _redis_session.get('1')
 
 
 if __name__ == '__main__':

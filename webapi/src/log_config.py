@@ -15,7 +15,7 @@ def setup_logging():
         '%(asctime)s - (%(name)s)[%(levelname)s][%(host)s]: %(request)s %(message)s %(status)s %(byte)s',
         datefmt='[%Y-%m-%d %H:%M:%S %z]')
     # # refer to https://docs.sqlalchemy.org/en/20/core/engines.html#configuring-logging
-    sqlalchemy_engine_logger = logging.getLogger("sqlalchemy.engine.Engine")
+    sqlalchemy_engine_logger = logging.getLogger("sqlalchemy.engine.Engine")  # not working for multiple workers :(
     sanic_root = logging.getLogger('sanic.root')
     sanic_error = logging.getLogger('sanic.error')
     sanic_server = logging.getLogger('sanic.server')
