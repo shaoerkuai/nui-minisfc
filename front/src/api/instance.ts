@@ -41,10 +41,13 @@ instance.interceptors.response.use(
       console.log(error);
       switch (error.response.status) {
         case 401:
-          (window as any).$message.warning('登录已过期，请重试');
+          (window as any).$message.warning('登录已过期，请重新登录');
           store.clearState();
           localStorage.removeItem('token');
           router.push({ name: 'login' });
+          break;
+        case 403:
+          (window as any).$message.error('没有操作的权限，请重试');
           break;
         default:
           (window as any).$message.error(error.response);
