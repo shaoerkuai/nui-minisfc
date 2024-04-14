@@ -49,8 +49,6 @@ instance.interceptors.response.use(
         case 403:
           (window as any).$message.error('没有操作的权限，请重试');
           break;
-        default:
-          (window as any).$message.error(error.response);
       }
       return Promise.reject(error.response);
     }

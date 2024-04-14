@@ -77,7 +77,7 @@ router.beforeEach(async (to, from) => {
   let isAuthenticated = checkLogin();
   if (!isAuthenticated && to.name !== 'login') {
     // 将用户重定向到登录页面
-    (window as any).$message.error('请先完成登录后再使用');
+    (window as any).$message.warning('请先完成登录');
     await cancelRoutingPublishEvent(from.name);
     return { name: 'login' };
   }
