@@ -20,6 +20,7 @@ instance.interceptors.request.use(
     const store = useSessionStore();
     if (token === null) {
       if (!checkWhitelistUri(<string>config.url)) {
+        // 登录uri不做过滤
         (window as any).$message.error('还未登录，请重试');
         store.clearState();
         router.push({ name: 'login' });
