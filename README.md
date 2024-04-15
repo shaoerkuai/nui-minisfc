@@ -15,11 +15,14 @@
 
 - Sanic
 - Swagger & Redoc
-- PostgreSQL & SQLAlchemy 2.0
+- MariaDB & SQLAlchemy 2.0
+- Redis
 
-## 中间件
+## 生态
 
-- jenkins
+- NaiveUI
+- Jenkins API
+- MinIO
 
 ## 开发说明
 
