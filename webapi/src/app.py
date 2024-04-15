@@ -1,5 +1,4 @@
 import asyncio
-import logging
 from contextvars import ContextVar
 
 import sqlalchemy
@@ -11,7 +10,7 @@ from sanic_jwt import initialize, scoped
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 
-from src.auth import authenticate, MyResponses, my_scope_extender, MyCustomClaim
+from src.auth import authenticate, MyResponses, my_scope_extender, MyRealNameClaim, MyDepartmentClaim
 from src.log_config import setup_logging
 from src.modules.api_group_v1 import api_group_all
 
@@ -32,7 +31,7 @@ initialize(app, authenticate=authenticate,
            add_scopes_to_payload=my_scope_extender,
            claim_aud='demoapp.com',
            claim_iat=True,
-           custom_claims=[MyCustomClaim])
+           custom_claims=[MyRealNameClaim, MyDepartmentClaim])
 app.blueprint(api_group_all)
 
 

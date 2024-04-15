@@ -1,8 +1,5 @@
-import traceback
-
 from sanic import json
 from sanic_jwt import Responses, Claim
-from sanic_jwt import exceptions
 from sanic_jwt.exceptions import SanicJWTException
 
 MANAGERS = ['wangwu', 'admin']  # 管理员列表
@@ -15,11 +12,21 @@ class AuthenticationCreateTokenFailed(SanicJWTException):
         super().__init__(message, **kwargs)
 
 
-class MyCustomClaim(Claim):
+class MyDepartmentClaim(Claim):
     key = 'dept'
 
     def setup(self, payload, user):
         return 'IT Test'
+
+    def verify(self, value):
+        return True
+
+
+class MyRealNameClaim(Claim):
+    key = 'name'
+
+    def setup(self, payload, user):
+        return user['user_id']
 
     def verify(self, value):
         return True
@@ -79,6 +86,16 @@ async def get_login_user(aio_session, user_name):
         return dto
 
 
+async def remove_login_code(aio_session, username):
+    """
+    登录完成后删除用户的redis记录，防止重复登录
+    :param aio_session:
+    :param username:
+    :return:
+    """
+    await aio_session.delete(f'verify:{username}')
+
+
 async def authenticate(request, *args, **kwargs):
     """
     授权入口
@@ -99,4 +116,6 @@ async def authenticate(request, *args, **kwargs):
 
     if password != user['code']:
         raise AuthenticationCreateTokenFailed("Verify code is incorrect.")
+
+    await remove_login_code(aio_session=request.ctx.r_session, username=user['user_id'])
     return user

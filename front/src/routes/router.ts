@@ -6,6 +6,7 @@ import {
 } from 'vue-router';
 import { Emitter } from 'mitt';
 import { commonEvent, ICommonEvent } from '../utils/mitt.ts';
+import { jwtDecode } from 'jwt-decode';
 
 const routes = [
   {
@@ -44,6 +45,7 @@ async function dispatchLoading(loading: boolean) {
   commonEvent.emit('routeLoading', loading);
 }
 
+// @ts-ignore
 function checkLogin() {
   const store = useSessionStore();
   if (store.isLogged()) {
@@ -51,11 +53,18 @@ function checkLogin() {
   } else {
     let localStorageToken = localStorage.getItem('token');
     if (localStorageToken) {
-      store.name = 'router.checkLogin';
-      store.dept = 'router.dept';
-      store.avatarLink = 'https://picsum.photos/200/300';
-      store.logged = true;
-      return true;
+      try {
+        const decoded: any = jwtDecode(localStorageToken);
+        store.name = decoded['name'];
+        store.dept = decoded['dept'];
+        store.avatarLink = 'https://picsum.photos/200/300';
+        store.logged = true;
+        return true;
+      } catch (e) {
+        (window as any).$message.error('票据解析异常，请重新登录');
+        localStorage.removeItem('token');
+        return false;
+      }
     } else {
       return false;
     }
@@ -70,6 +79,7 @@ async function cancelRoutingPublishEvent(
     key as string,
   );
 }
+
 // @ts-ignore
 router.beforeEach(async (to, from) => {
   await dispatchLoading(true);

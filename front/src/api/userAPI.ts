@@ -2,7 +2,7 @@ import { instance } from './instance.ts';
 
 interface IUserLoginDto {
   username: string;
-  verifyCode: string;
+  code: string;
 }
 
 interface IUserGetCodeDto {
@@ -10,12 +10,14 @@ interface IUserGetCodeDto {
 }
 
 /* 发送验证码 */
-export const sendCode = (data: IUserGetCodeDto) => {
-  return instance.post('/api/v1/user/sendCode', JSON.stringify(data), {});
+export const sendCode = (data: string) => {
+  return instance.get('/api/v1/user/verifyCode', {
+    params: { username: data },
+  });
 };
 /* 登录获取JWT */
 export const userLogin = (data: IUserLoginDto) => {
-  return instance.post('/api/v1/user/login', JSON.stringify(data), {});
+  return instance.post('/api/v1/security', JSON.stringify(data), {});
 };
 
 /* 用户头像 */

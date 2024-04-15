@@ -2,6 +2,14 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import router from '../routes/router.ts';
 import { useSessionStore } from '../store/sessionStore.ts';
 
+const whitelistTable = ['/api/v1/user/verifyCode', '/api/v1/security'];
+
+function checkWhitelistUri(uri: string) {
+  return whitelistTable.some((val: string) => {
+    return val === uri;
+  });
+}
+
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_APP_URL,
   timeout: 2000,
@@ -11,9 +19,11 @@ instance.interceptors.request.use(
     const token = localStorage.getItem('token');
     const store = useSessionStore();
     if (token === null) {
-      (window as any).$message.error('还未登录，请重试');
-      store.clearState();
-      router.push({ name: 'login' });
+      if (!checkWhitelistUri(<string>config.url)) {
+        (window as any).$message.error('还未登录，请重试');
+        store.clearState();
+        router.push({ name: 'login' });
+      }
     } else {
       config.headers.set('Authorization', 'Bearer ' + token);
     }

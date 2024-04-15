@@ -40,7 +40,7 @@ export default defineConfig({
     // /api/XXX to http://127.0.0.1:8033/
     proxy: {
       "/api": {
-        target: `http://127.0.0.1:8033/`, // 接口前缀
+        target: `http://127.0.0.1:8000/`, // 接口前缀
         changeOrigin: true, // 是否允许跨域
         secure: false, // https
         // rewrite: (path) => path.replace(/^\/api/, ""), api的地址是统一的

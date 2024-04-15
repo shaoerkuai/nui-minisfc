@@ -2,6 +2,7 @@
 import { FormInst } from 'naive-ui';
 import { useSessionStore } from '../../store/sessionStore.ts';
 import { AlertCircle } from '@vicons/ionicons5';
+import { sendCode, userLogin } from '../../api/userAPI.ts';
 
 const loading = ref(false);
 const alreadyReceived = ref(false);
@@ -43,20 +44,31 @@ const rules = {
 
 function receiveCode() {
   formRef.value
-    ?.validate(
-      (errors) => {
-        if (!errors) {
-          loading.value = !loading.value;
-          setTimeout(() => {
-            alreadyReceived.value = true;
-            loading.value = !loading.value;
-          }, 2000);
-        }
-      },
+    ?.validate(()=>{
+
+    },
       (rule) => {
         return rule?.key === 'uValidateRuleKey';
       },
     )
+    .then(() => {
+      loading.value = !loading.value;
+      sendCode(loginFormValue.value.username)
+        .then((resp) => {
+          if (resp.data.error === false) {
+            message.success('已发送验证码，请通过验证码登录');
+            alreadyReceived.value = true;
+          } else {
+            message.error('验证码发送失败，请稍后重试');
+          }
+        })
+        .catch(() => {
+          message.error('验证码发送失败，服务异常，请稍后重试');
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    })
     .catch(() => {
       message.error('请检查输入项是否正确');
     });
@@ -84,18 +96,28 @@ async function login(e: Event) {
   e.preventDefault();
   if (await validate()) {
     loading.value = true;
-    setTimeout(() => {
-      // TODO 这里从服务器拿jwt后解析
-      store.dept = 'IT Test';
-      store.name = 'Jacob';
-      store.avatarLink =
-        'https://picsum.photos/200/300';
-      store.logged = true;
-      localStorage.setItem('token', '1');
-      message.success('登录成功');
-      loading.value = false;
-      route.push({ name: 'home' });
-    }, 500);
+    userLogin({
+      username: loginFormValue.value.username,
+      code: loginFormValue.value.verifyCode,
+    })
+      .then((resp) => {
+        localStorage.setItem('token', resp.data['access_token']);
+        message.success('欢迎登录本平台');
+        route.push({ name: 'home' });
+      })
+      .catch((err) => {
+        switch (err.status) {
+          case 406:
+            // 创建Token失败，验证码错误
+            message.error('登录失败，请检查验证码是否正确');
+            break;
+          default:
+            message.error(err.statusText);
+        }
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }
 }
 </script>
