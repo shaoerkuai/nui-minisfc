@@ -10,6 +10,7 @@ from sanic_jwt import initialize, scoped
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 
+from src import config
 from src.auth import authenticate, MyResponses, my_scope_extender, MyRealNameClaim, MyDepartmentClaim
 from src.logger import setup_log, S_LOGGING_CONFIG_DEFAULTS
 from src.modules.api_group_v1 import api_group_all
@@ -88,4 +89,4 @@ async def check_db_connection():
 
 if __name__ == '__main__':
     asyncio.run(check_db_connection())
-    app.run(host='0.0.0.0')
+    app.run(host=config.ADDR_BIND, port=config.HTTP_PORT, auto_tls=config.HTTPS_ENABLED)

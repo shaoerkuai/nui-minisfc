@@ -4,15 +4,17 @@ from typing import Dict, Any
 
 from loguru import logger
 
+from src import config
+
 LOG_FORMAT = '{time:YYYY-MM-DD HH:mm:ss} [{level}] {module}:{name}:{line} - {message}'
 
 logger.add("info.log", filter=lambda record: "INFO" in record['level'].name, rotation="10 MB",
            retention="3 days", level="INFO", format=LOG_FORMAT)
 logger.add("trace.log", filter=lambda record: "TRACE" in record['level'].name, level="TRACE")
 logger.add("debug.log", filter=lambda record: "DEBUG" in record['level'].name, rotation="10 MB",
-           retention="3 days", level="DEBUG", format=LOG_FORMAT)
+           retention="1 days", level="DEBUG", format=LOG_FORMAT)
 logger.add("error.log", filter=lambda record: "ERROR" in record['level'].name, rotation="10 MB",
-           retention="1 days", level="ERROR", format=LOG_FORMAT)
+           retention="5 days", level="ERROR", format=LOG_FORMAT)
 
 S_LOGGING_CONFIG_DEFAULTS: Dict[str, Any] = dict(  # no cov
     version=1,
@@ -69,8 +71,8 @@ class InterceptHandler(logging.Handler):
 
 def setup_log():
     logging.root.handlers = [InterceptHandler()]
-    logging.root.setLevel("DEBUG")
+    logging.root.setLevel(config.ROOT_LOG_LEVEL)
     for name in logging.root.manager.loggerDict.keys():
         logging.getLogger(name).handlers = []
         logging.getLogger(name).propagate = True
-    logger.configure(handlers=[{"sink": sys.stdout, "serialize": False}])
+    logger.configure(handlers=[{"sink": sys.stdout, "serialize": False, "level": config.CONSOLE_LOG_LEVEL}])

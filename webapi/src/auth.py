@@ -2,7 +2,9 @@ from sanic import json
 from sanic_jwt import Responses, Claim
 from sanic_jwt.exceptions import SanicJWTException
 
-MANAGERS = ['wangwu', 'admin']  # 管理员列表
+from src import config
+
+MANAGERS = config.MANAGER_ACCOUNT_LIST  # 管理员列表
 
 
 class AuthenticationCreateTokenFailed(SanicJWTException):
