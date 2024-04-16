@@ -8,6 +8,7 @@
     "successColorPressed": "#147643FF",
     "successColorHover": "#50B376FF",
     "successColorSuppl": "#50B376FF",
-    "errorColor": "#D03050FF"
+    "errorColor": "#D03050FF",
+    "warningColor": "#F0A020FF"
   }
 }
