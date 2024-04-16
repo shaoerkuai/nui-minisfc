@@ -1,13 +1,18 @@
 import logging
 import sys
-from logging import LogRecord
 from typing import Dict, Any
 
 from loguru import logger
 
-contextLogger = logger
+LOG_FORMAT = '{time:YYYY-MM-DD HH:mm:ss} [{level}] {module}:{name}:{line} - {message}'
 
-LOG_FORMAT = '{time:YYYY-MM-DD HH:mm:ss} [{level}] - {message}'
+logger.add("info.log", filter=lambda record: "INFO" in record['level'].name, rotation="10 MB",
+           retention="3 days", level="INFO", format=LOG_FORMAT)
+logger.add("trace.log", filter=lambda record: "TRACE" in record['level'].name, level="TRACE")
+logger.add("debug.log", filter=lambda record: "DEBUG" in record['level'].name, rotation="10 MB",
+           retention="3 days", level="DEBUG", format=LOG_FORMAT)
+logger.add("error.log", filter=lambda record: "ERROR" in record['level'].name, rotation="10 MB",
+           retention="1 days", level="ERROR", format=LOG_FORMAT)
 
 S_LOGGING_CONFIG_DEFAULTS: Dict[str, Any] = dict(  # no cov
     version=1,
@@ -47,25 +52,25 @@ S_LOGGING_CONFIG_DEFAULTS: Dict[str, Any] = dict(  # no cov
 )
 
 
-class InterceptHandler(logging.StreamHandler):
-    def emit(self, record: LogRecord) -> None:
+class InterceptHandler(logging.Handler):
+    def emit(self, record: logging.LogRecord):
         try:
-            level = contextLogger.level(record.levelname).name
-        except:
-            level = record.levelname
-        logger_opt = contextLogger.opt(depth=1, exception=record.exc_info)
-        msg = self.format(record)
-        logger_opt.log(level, msg)
+            level = logger.level(record.levelname).name
+        except ValueError:
+            level = record.levelno
+        # Find caller from where originated the logged message
+        frame, depth = logging.currentframe(), 2
+        while frame.f_code.co_filename == logging.__file__:
+            frame = frame.f_back
+            depth += 1
+
+        logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
+
 
 def setup_log():
-    logging.basicConfig(handlers=[InterceptHandler()], level=0)
-    #  控制台只打印INFO以上级别
-    contextLogger.configure(handlers=[{'sink': sys.stderr, "level": "INFO", "format": LOG_FORMAT}])
-    #  trace\debug\error打印到单独的文件
-    contextLogger.add("info.log", filter=lambda record: "INFO" in record['level'].name, rotation="10 MB",
-                      retention="3 days", level="INFO", format=LOG_FORMAT)
-    contextLogger.add("trace.log", filter=lambda record: "TRACE" in record['level'].name, level="TRACE")
-    contextLogger.add("debug.log", filter=lambda record: "DEBUG" in record['level'].name, rotation="10 MB",
-                      retention="3 days", level="DEBUG", format=LOG_FORMAT)
-    contextLogger.add("error.log", filter=lambda record: "ERROR" in record['level'].name, rotation="10 MB",
-                      retention="1 days", level="ERROR", format=LOG_FORMAT)
+    logging.root.handlers = [InterceptHandler()]
+    logging.root.setLevel("DEBUG")
+    for name in logging.root.manager.loggerDict.keys():
+        logging.getLogger(name).handlers = []
+        logging.getLogger(name).propagate = True
+    logger.configure(handlers=[{"sink": sys.stdout, "serialize": False}])

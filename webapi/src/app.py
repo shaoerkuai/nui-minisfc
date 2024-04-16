@@ -11,18 +11,19 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 
 from src.auth import authenticate, MyResponses, my_scope_extender, MyRealNameClaim, MyDepartmentClaim
-from src.log_config import setup_logging
-from src.logger import S_LOGGING_CONFIG_DEFAULTS, setup_log
+from src.logger import setup_log, S_LOGGING_CONFIG_DEFAULTS
 from src.modules.api_group_v1 import api_group_all
 
 _redis_session = aioredis.Redis(host='localhost', port=3278, db=0)
-bind = create_async_engine("mysql+aiomysql://root:123456@localhost/db_test")
+bind = create_async_engine("mysql+aiomysql://root:123456@localhost/db_test", echo=False)
 _session_maker = async_sessionmaker(bind, expire_on_commit=False)
 _base_model_session_ctx = ContextVar("session")
 
+# TODO ONLY FOR DEMO,RE-GENERATE FOR YOUR SELF !!!
 secret = 'a67636b3970539ef97727d3baf9de38618f7b1123bbda7d7f0f1353b3eb75cfbbed4210ee2f9487872132a9b4b821f993616e2cb2339fc9080f0507fcf2c0b5048254220f90c344fa2c15b2e8cf82142ac8e9604f545e7bc0be5460049d8cbac976ad174ba3aff51a1f3f5aec8819855129b2146c2638a56fecfb5d68415f4a4e1f005a0752bd8616805a34e0946aeb0a39d9ab37be0866e2045ebcb532d55e44fd12cae6d2a392785b705d007344c3ff640730808dc5c7a023140caff87cb60cd73d6cd34b8f80b0b89ba7b088b22859f82f77dd240a736c31e689daaa0740cc586dfa3ac9af3f6410088f1090ba40cdee145aa10d51377660c6ca1df5d7da3'
 
-app = Sanic('demo-app',log_config=S_LOGGING_CONFIG_DEFAULTS)
+setup_log()
+app = Sanic('demo-app', log_config=S_LOGGING_CONFIG_DEFAULTS)
 initialize(app, authenticate=authenticate,
            secret=secret,
            expiration_delta=60 * 60 * 24,
@@ -86,6 +87,5 @@ async def check_db_connection():
 
 
 if __name__ == '__main__':
-    setup_log()
     asyncio.run(check_db_connection())
     app.run(host='0.0.0.0')
