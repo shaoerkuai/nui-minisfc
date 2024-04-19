@@ -2,22 +2,18 @@ import asyncio
 from contextvars import ContextVar
 
 import sqlalchemy
-from redis import asyncio as aioredis
 from sanic import Sanic, json
 from sanic.exceptions import HTTPException
 from sanic.log import logger
 from sanic_jwt import initialize, scoped
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src import config
+from src import config, dependencies
 from src.auth import authenticate, MyResponses, my_scope_extender, MyRealNameClaim, MyDepartmentClaim
 from src.logger import setup_log, S_LOGGING_CONFIG_DEFAULTS
 from src.modules.api_group_v1 import api_group_all
 
-_redis_session = aioredis.Redis(host='localhost', port=3278, db=0)
-bind = create_async_engine("mysql+aiomysql://root:123456@localhost/db_test", echo=False)
-_session_maker = async_sessionmaker(bind, expire_on_commit=False)
 _base_model_session_ctx = ContextVar("session")
 
 # TODO ONLY FOR DEMO,RE-GENERATE FOR YOUR SELF !!!
@@ -40,8 +36,8 @@ app.blueprint(api_group_all)
 
 @app.middleware("request")
 async def inject_redis_session(request):
-    request.ctx.r_session = _redis_session
-    request.ctx.session = _session_maker()
+    request.ctx.r_session = dependencies.redis_session
+    request.ctx.session = dependencies.session_maker()
     request.ctx.session_ctx_token = _base_model_session_ctx.set(request.ctx.session)
 
 
@@ -82,9 +78,9 @@ async def ds(request):
 
 async def check_db_connection():
     logger.info('Check database connection')
-    async with bind.connect() as conn:
+    async with dependencies.bind.connect() as conn:
         await conn.execute(text('SELECT 1'))
-    await _redis_session.get('1')
+    await dependencies.redis_session.get('1')
 
 
 if __name__ == '__main__':
